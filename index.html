@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wi-Fi Маркетинг Платформа — Интерактивно Демо</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f3f4f6;
+    }
+    .phone-shadow {
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.22), 0 0 0 10px #1e293b, 0 0 0 12px #334155;
+    }
+    @media (max-width: 640px) {
+      .phone-shadow {
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+      }
+    }
+    .fade-in {
+      animation: fadeIn 0.28s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+  <!-- Top Agency Control Bar (Interactive White-Label Switcher) -->
+  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-30">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-600 text-white tracking-wide uppercase">
+          Demo Mode
+        </span>
+        <span class="text-sm font-medium text-slate-200">
+          Симулатор за маркетингови агенции (White-Label преглед)
+        </span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-slate-400 mr-1">Тестов обект:</span>
+        <button onclick="selectPreset('restaurant')" id="btn-preset-restaurant"
+          class="preset-btn px-3 py-1.5 rounded-lg font-medium bg-blue-600 text-white transition">
+          Ресторант
+        </button>
+        <button onclick="selectPreset('clinic')" id="btn-preset-clinic"
+          class="preset-btn px-3 py-1.5 rounded-lg font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+          Дентална клиника
+        </button>
+        <button onclick="selectPreset('auto')" id="btn-preset-auto"
+          class="preset-btn px-3 py-1.5 rounded-lg font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+          Автосервиз
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6 md:py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+    <!-- Left Column: Live Offer Customizer & Telemetry Preview (For Agency) -->
+    <div class="lg:col-span-5 space-y-5 order-2 lg:order-1">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-base font-bold text-slate-900">Настройка на офертата (Live)</h2>
+          <span class="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md font-medium">
+            Без писане на код
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mb-4">
+          Променете текста или цвета отдолу — екранът на телефона вдясно се обновява мигновено, точно както в реалния дашборд за агенции.
+        </p>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Име на търговския обект</label>
+            <input type="text" id="input-business-name" oninput="syncLivePreview()"
+              class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Оферта / Стимул за клиента</label>
+            <input type="text" id="input-offer-text" oninput="syncLivePreview()"
+              class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Промо код</label>
+              <input type="text" id="input-promo-code" oninput="syncLivePreview()"
+                class="w-full px-3 py-2 text-sm font-mono uppercase border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Бранд цвят</label>
+              <div class="flex items-center gap-2">
+                <input type="color" id="input-brand-color" oninput="syncLivePreview()"
+                  class="h-9 w-12 rounded cursor-pointer border border-slate-300" />
+                <span id="color-hex-label" class="text-xs font-mono text-slate-500">#0052CC</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulated Backend / GDPR Audit Log Card -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-bold text-slate-900">Системен и GDPR статус</h3>
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Портал Активен
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mb-3">
+          В реална среда тук се записва одит лог за всяко влизане и съгласие.
+        </p>
+        <div id="audit-log-box" class="bg-slate-900 text-slate-300 rounded-xl p-3 font-mono text-[11px] leading-relaxed space-y-1">
+          <div>[SYSTEM] RouterOS Hotspot: Ready (Walled Garden)</div>
+          <div>[GDPR] Consent Policy v1.0: Enforced</div>
+          <div id="audit-dynamic-line" class="text-amber-400">[WAITING] Очаква се тест от телефона...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Smartphone Captive Portal Simulation -->
+    <div class="lg:col-span-7 flex flex-col items-center order-1 lg:order-2">
+      <!-- Step Indicator Pills -->
+      <div class="flex items-center gap-1.5 mb-5 bg-white px-3 py-1.5 rounded-full shadow-sm border border-slate-200 text-xs">
+        <button onclick="goToStep(1)" id="pill-1" class="step-pill px-2.5 py-1 rounded-full font-semibold bg-slate-900 text-white">1. Вход</button>
+        <span class="text-slate-300">→</span>
+        <button onclick="goToStep(2)" id="pill-2" class="step-pill px-2.5 py-1 rounded-full font-medium text-slate-500">2. Данни & GDPR</button>
+        <span class="text-slate-300">→</span>
+        <button onclick="goToStep(3)" id="pill-3" class="step-pill px-2.5 py-1 rounded-full font-medium text-slate-500">3. Интернет</button>
+        <span class="text-slate-300">→</span>
+        <button onclick="goToStep(4)" id="pill-4" class="step-pill px-2.5 py-1 rounded-full font-medium text-slate-500">4. Имейл & Ревю</button>
+      </div>
+
+      <!-- Phone Frame -->
+      <div class="w-full max-w-[375px] bg-white rounded-[2.5rem] phone-shadow overflow-hidden border border-slate-200 flex flex-col min-h-[640px]">
+        <!-- Phone Status Bar -->
+        <div class="bg-slate-50 px-6 pt-3 pb-2 flex items-center justify-between text-[11px] font-semibold text-slate-600 border-b border-slate-100">
+          <span>9:41</span>
+          <div class="w-20 h-4 bg-slate-900 rounded-full"></div>
+          <div class="flex items-center gap-1">
+            <span>Wi-Fi</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <!-- Captive Portal Browser Bar -->
+        <div class="bg-slate-100 px-4 py-2 text-center border-b border-slate-200">
+          <div class="inline-flex items-center gap-1.5 text-[11px] text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">
+            <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <span>portal.guestconnect.eu/demo</span>
+          </div>
+        </div>
+
+        <!-- Screen Content Container -->
+        <div class="flex-1 p-6 flex flex-col justify-between">
+
+          <!-- STEP 1: Welcome Screen -->
+          <div id="step-1" class="fade-in flex-1 flex flex-col justify-between">
+            <div class="text-center mt-6">
+              <div id="brand-avatar-1" class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold shadow-md" style="background-color: #0052CC;">
+                Р
+              </div>
+              <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                Безплатен Wi-Fi за гости
+              </span>
+              <h1 id="display-name-1" class="text-xl font-extrabold text-slate-900 mb-2">
+                Ресторант „Стария град“
+              </h1>
+              <p class="text-sm text-slate-500 leading-relaxed">
+                Добре дошли! Свържете се с нашата високоскоростна мрежа без парола и вземете специален подарък.
+              </p>
+            </div>
+
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center my-4">
+              <div class="text-xs font-semibold text-slate-500 mb-1">Активен бонус при вход:</div>
+              <div id="display-offer-1" class="text-sm font-bold text-slate-900">
+                Ваучер за -10% отстъпка при следващо посещение
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <button onclick="goToStep(2)" id="cta-btn-1"
+                class="w-full py-3.5 px-4 rounded-xl text-white font-semibold text-sm shadow-md hover:opacity-95 transition cursor-pointer"
+                style="background-color: #0052CC;">
+                Свържи се с Интернет
+              </button>
+              <p class="text-[11px] text-center text-slate-400">
+                Защитена връзка • Без нужда от парола от персонала
+              </p>
+            </div>
+          </div>
+
+          <!-- STEP 2: Email & GDPR Consent Form -->
+          <div id="step-2" class="hidden fade-in flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-5">
+                <div id="brand-avatar-2" class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-base shrink-0" style="background-color: #0052CC;">
+                  Р
+                </div>
+                <div>
+                  <div id="display-name-2" class="text-sm font-bold text-slate-900">Ресторант „Стария град“</div>
+                  <div class="text-xs text-slate-500">Бърза активация на достъпа</div>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 mb-4">
+                <div class="text-xs font-semibold text-blue-900 mb-0.5">Вашият подарък:</div>
+                <div id="display-offer-2" class="text-sm font-bold text-blue-950">
+                  Ваучер за -10% отстъпка при следващо посещение
+                </div>
+              </div>
+
+              <form onsubmit="handleFormSubmit(event)" class="space-y-3.5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">
+                    Къде да изпратим вашия ваучер?
+                  </label>
+                  <input type="email" id="guest-email" required placeholder="ime@example.com"
+                    class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <!-- GDPR Checkbox 1 (Mandatory Terms) -->
+                <label class="flex items-start gap-2.5 cursor-pointer text-xs text-slate-600 leading-snug">
+                  <input type="checkbox" id="gdpr-terms" required class="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                  <span>
+                    Съгласен съм с <span class="underline text-slate-800">Общите условия</span> за ползване на Wi-Fi и <span class="underline text-slate-800">Политиката за поверителност</span>. *
+                  </span>
+                </label>
+
+                <!-- GDPR Checkbox 2 (Optional Marketing Consent) -->
+                <label class="flex items-start gap-2.5 cursor-pointer text-xs text-slate-600 leading-snug bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+                  <input type="checkbox" id="gdpr-marketing" class="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                  <span>
+                    Желая да получавам ваучери за отстъпка и специални оферти по имейл (можете да се отпишете по всяко време с 1 клик).
+                  </span>
+                </label>
+
+                <div id="form-error" class="hidden text-xs text-red-600 font-medium"></div>
+
+                <button type="submit" id="cta-btn-2"
+                  class="w-full py-3.5 px-4 rounded-xl text-white font-semibold text-sm shadow-md hover:opacity-95 transition cursor-pointer mt-2"
+                  style="background-color: #0052CC;">
+                  Отключи Wi-Fi и вземи бонус
+                </button>
+              </form>
+            </div>
+
+            <button onclick="goToStep(1)" class="text-xs text-slate-400 hover:text-slate-600 text-center mt-3">
+              ← Назад
+            </button>
+          </div>
+
+          <!-- STEP 3: Internet Unlocked -->
+          <div id="step-3" class="hidden fade-in flex-1 flex flex-col justify-between text-center">
+            <div class="my-auto py-4">
+              <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-extrabold text-slate-900 mb-2">Успешно свързване!</h2>
+              <p class="text-sm text-slate-600 mb-5">
+                Интернет достъпът ви е отключен. Изпратихме обещания ваучер на <span id="confirmed-email" class="font-semibold text-slate-900">вашата поща</span>.
+              </p>
+
+              <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200 text-left text-xs space-y-1.5 mb-5">
+                <div class="flex justify-between">
+                  <span class="text-slate-500">Статус на сесията:</span>
+                  <span class="font-semibold text-emerald-700">Активна (180 мин.)</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-500">Маркетинг съгласие:</span>
+                  <span id="confirmed-consent" class="font-semibold text-slate-800">Да</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-500">Запис в базата:</span>
+                  <span class="font-mono text-slate-700">Supabase EU-Central</span>
+                </div>
+              </div>
+
+              <button onclick="goToStep(4)" id="cta-btn-3"
+                class="w-full py-3.5 px-4 rounded-xl text-white font-semibold text-sm shadow-md hover:opacity-95 transition cursor-pointer"
+                style="background-color: #0052CC;">
+                Виж автоматичния имейл →
+              </button>
+            </div>
+
+            <button onclick="resetDemo()" class="text-xs text-slate-400 hover:text-slate-600">
+              Рестартирай демото
+            </button>
+          </div>
+
+          <!-- STEP 4: Automated Email & Google Review Trigger -->
+          <div id="step-4" class="hidden fade-in flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-200">
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Входяща поща (Симулация)</span>
+                <span class="text-[11px] text-slate-400">Преди 1 мин.</span>
+              </div>
+
+              <div class="mb-3">
+                <div class="text-xs text-slate-500">От: <strong id="email-sender-name" class="text-slate-800">Ресторант „Стария град“</strong></div>
+                <div class="text-xs text-slate-500">До: <span id="email-recipient" class="text-slate-700">guest@example.com</span></div>
+                <div class="text-sm font-bold text-slate-900 mt-1">Вашият подарък и благодарност за посещението!</div>
+              </div>
+
+              <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 text-center space-y-3">
+                <p id="email-offer-body" class="text-xs text-slate-700 font-medium">
+                  Ваучер за -10% отстъпка при следващо посещение
+                </p>
+
+                <div class="bg-white border-2 border-dashed border-slate-300 rounded-xl py-2.5 px-4">
+                  <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Вашият промо код</div>
+                  <div id="email-promo-code" class="text-xl font-black tracking-widest text-slate-900 mt-0.5">WIFI10</div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-200">
+                  <p class="text-xs text-slate-600 mb-2.5">
+                    Доволни ли сте от обслужването днес? Подкрепете ни с оценка в Google:
+                  </p>
+                  <button onclick="showReviewToast()" id="cta-btn-4"
+                    class="w-full py-2.5 px-3 rounded-xl text-white font-semibold text-xs shadow hover:opacity-95 transition cursor-pointer"
+                    style="background-color: #0052CC;">
+                    ★★★★★ Оставете ревю в Google Maps
+                  </button>
+                </div>
+              </div>
+
+              <div id="review-toast" class="hidden mt-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 text-center font-medium">
+                В реална среда този бутон отваря директно прозореца за 5-звездна оценка в Google Business профила на обекта.
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+              <span>GDPR Отписване (Unsubscribe)</span>
+              <button onclick="resetDemo()" class="text-blue-600 font-semibold hover:underline cursor-pointer">
+                Нов тест ↻
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const presets = {
+      restaurant: {
+        name: 'Ресторант „Стария град“',
+        offer: 'Ваучер за -10% отстъпка при следващо посещение',
+        code: 'WIFI10',
+        color: '#0052CC'
+      },
+      clinic: {
+        name: 'Дентална клиника „ДентАрт“',
+        offer: 'Ваучер за 15 EUR за професионално почистване',
+        code: 'DENT15',
+        color: '#0D9488'
+      },
+      auto: {
+        name: 'Автосервиз „АутоЕксперт“',
+        offer: 'Безплатна компютърна диагностика при следващ преглед',
+        code: 'AUTO2026',
+        color: '#EA580C'
+      }
+    };
+
+    function selectPreset(key) {
+      const p = presets[key];
+      document.getElementById('input-business-name').value = p.name;
+      document.getElementById('input-offer-text').value = p.offer;
+      document.getElementById('input-promo-code').value = p.code;
+      document.getElementById('input-brand-color').value = p.color;
+
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+      const activeBtn = document.getElementById('btn-preset-' + key);
+      activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+      activeBtn.classList.add('bg-blue-600', 'text-white');
+
+      syncLivePreview();
+    }
+
+    function syncLivePreview() {
+      const name = document.getElementById('input-business-name').value || 'Вашият Обект';
+      const offer = document.getElementById('input-offer-text').value || 'Специален бонус за гости';
+      const code = (document.getElementById('input-promo-code').value || 'BONUS10').toUpperCase();
+      const color = document.getElementById('input-brand-color').value || '#0052CC';
+      const initial = name.trim().charAt(0).toUpperCase() || 'W';
+
+      document.getElementById('color-hex-label').textContent = color.toUpperCase();
+
+      // Update Avatars
+      ['brand-avatar-1', 'brand-avatar-2'].forEach(id => {
+        const el = document.getElementById(id);
+        el.textContent = initial;
+        el.style.backgroundColor = color;
+      });
+
+      // Update Texts
+      document.getElementById('display-name-1').textContent = name;
+      document.getElementById('display-name-2').textContent = name;
+      document.getElementById('email-sender-name').textContent = name;
+
+      document.getElementById('display-offer-1').textContent = offer;
+      document.getElementById('display-offer-2').textContent = offer;
+      document.getElementById('email-offer-body').textContent = offer;
+
+      document.getElementById('email-promo-code').textContent = code;
+
+      // Update Buttons
+      ['cta-btn-1', 'cta-btn-2', 'cta-btn-3', 'cta-btn-4'].forEach(id => {
+        document.getElementById(id).style.backgroundColor = color;
+      });
+    }
+
+    function goToStep(stepNum) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('step-' + i).classList.add('hidden');
+        const pill = document.getElementById('pill-' + i);
+        if (i === stepNum) {
+          pill.classList.remove('text-slate-500', 'font-medium');
+          pill.classList.add('bg-slate-900', 'text-white', 'font-semibold');
+        } else {
+          pill.classList.remove('bg-slate-900', 'text-white', 'font-semibold');
+          pill.classList.add('text-slate-500', 'font-medium');
+        }
+      }
+      document.getElementById('step-' + stepNum).classList.remove('hidden');
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('guest-email').value.trim();
+      const termsChecked = document.getElementById('gdpr-terms').checked;
+      const marketingChecked = document.getElementById('gdpr-marketing').checked;
+      const errorBox = document.getElementById('form-error');
+
+      if (!email || !termsChecked) {
+        errorBox.textContent = 'Моля, въведете валиден имейл и приемете общите условия.';
+        errorBox.classList.remove('hidden');
+        return;
+      }
+
+      errorBox.classList.add('hidden');
+      document.getElementById('confirmed-email').textContent = email;
+      document.getElementById('email-recipient').textContent = email;
+      document.getElementById('confirmed-consent').textContent = marketingChecked ? 'Да (Маркетинг + Ваучер)' : 'Само Wi-Fi достъп';
+
+      const now = new Date().toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const auditLine = document.getElementById('audit-dynamic-line');
+      auditLine.className = 'text-emerald-400';
+      auditLine.textContent = `[LEAD CAPTURED ${now}] ${email} | Marketing: ${marketingChecked ? 'TRUE' : 'FALSE'}`;
+
+      goToStep(3);
+    }
+
+    function showReviewToast() {
+      document.getElementById('review-toast').classList.remove('hidden');
+    }
+
+    function resetDemo() {
+      document.getElementById('guest-email').value = '';
+      document.getElementById('gdpr-terms').checked = false;
+      document.getElementById('gdpr-marketing').checked = false;
+      document.getElementById('review-toast').classList.add('hidden');
+      const auditLine = document.getElementById('audit-dynamic-line');
+      auditLine.className = 'text-amber-400';
+      auditLine.textContent = '[WAITING] Очаква се тест от телефона...';
+      goToStep(1);
+    }
+
+    // Initialize default preset
+    selectPreset('restaurant');
+  </script>
+</body>
+</html>
